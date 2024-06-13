@@ -3,7 +3,7 @@ module ClkDiv_tb ();
   reg I_REF_CLK_tb;
   reg I_RST_N_tb;
   reg I_CLK_EN_tb;
-  reg [7:0] I_DIV_RATIO_tb;
+  reg [2:0] I_DIV_RATIO_tb;
   wire O_DIV_CLK_tb;
   
 /*
@@ -13,9 +13,8 @@ module ClkDiv_tb ();
 */
 
   parameter CLK_P     = 10 ;
-  parameter DIV_RATIO = 'b011;
-  parameter CLK_EN_OFF= 1'b0;
-  parameter CLK_EN_ON = 1'b1;
+  parameter DIV_RATIO = 'b011 ;
+  parameter CLK_EN    = 1'b1;
   
 /*
 //////////////////////////////////
@@ -25,7 +24,7 @@ module ClkDiv_tb ();
 
   ClkDiv  DUT (
   .i_ref_clk(I_REF_CLK_tb),
-  .i_rst(I_RST_N_tb),
+  .i_rst_n(I_RST_N_tb),
   .i_clk_en(I_CLK_EN_tb),
   .i_div_ratio(I_DIV_RATIO_tb),
   .o_div_clk(O_DIV_CLK_tb)
@@ -51,7 +50,7 @@ begin
       $dumpfile("ClkDiv_tb.vcd");
       $dumpvars;
       initialize();
-      //do_operation (CLK_EN , DIV_RATIO );
+      do_operation (CLK_EN , DIV_RATIO );
       $finish;
 end
 
@@ -64,18 +63,14 @@ end
 
 task initialize ;                                    
   begin
-        I_REF_CLK_tb   = 'b0;
-        I_RST_N_tb     = 'b0;
-        I_DIV_RATIO_tb = DIV_RATIO ;
-        I_CLK_EN_tb = CLK_EN_OFF ;
+        I_REF_CLK_tb = 'b0;
+        I_RST_N_tb   = 'b0;
         #(CLK_P/2);
-        I_CLK_EN_tb = CLK_EN_ON ;
         I_RST_N_tb   = 'b1;
-        #(30*CLK_P);
   end
 endtask
 
-/*
+
 task do_operation ;
   input  T_CLK_EN_tb ;
   input  [2:0] T_DIV_RATIO_tb ;
@@ -85,6 +80,5 @@ task do_operation ;
       #(30*CLK_P);
   end
 endtask
-*/
 
 endmodule              // ############   CHECK THE WAVEFORM  ############
